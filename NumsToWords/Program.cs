@@ -110,12 +110,15 @@ public class GenerateWords
         series.Add(new Series() { SeriesName = "Crore", SeriesValue = formatinput.Substring(2, 2) });
         series.Add(new Series() { SeriesName = "Lakh", SeriesValue = formatinput.Substring(4, 2) });
         series.Add(new Series() { SeriesName = "Thousand", SeriesValue = formatinput.Substring(6, 2) });
-        series.Add(new Series() { SeriesName = "Hundred", SeriesValue = formatinput.Substring(8, 1) });
+        series.Add(new Series() { SeriesName = "Hundred", SeriesValue = "0" + formatinput.Substring(8, 1) });
         series.Add(new Series() { SeriesName = "", SeriesValue = formatinput.Substring(9, 2) });
 
         foreach (var item in series)
         {
             int i = Convert.ToInt32(item.SeriesValue);
+            int firstPosDigit = Convert.ToInt32(item.SeriesValue.Substring(0, 1));
+            int secondPosDigit = Convert.ToInt32(item.SeriesValue.Substring(1, 1));
+
             if (i != 0)
             {
                 if (i >= 1 && i <= 9)
@@ -130,6 +133,13 @@ public class GenerateWords
                 {
                     formatoutput = formatoutput + " " + arr20to90[i];
                 }
+                else if ((i > 20) &&
+                        (secondPosDigit != 0))
+                {
+                    //This condition executes for any condition where i is greater then 20 and digit on 2nd position is != 0
+                    formatoutput = formatoutput + " " + arr20to90[firstPosDigit];
+                    formatoutput = formatoutput + " " + arrSingle[secondPosDigit];
+                }
 
                 //Adding suffixes to digit
                 formatoutput = formatoutput + " " + item.SeriesName;
@@ -138,7 +148,7 @@ public class GenerateWords
 
         Console.WriteLine(formatinput);
 
-        _outputs = formatoutput;
+        _outputs = "INR " + formatoutput + " only";
 
         return retval;
     }
