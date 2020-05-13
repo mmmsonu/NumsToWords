@@ -15,10 +15,11 @@ namespace NumsToWords
                 Console.WriteLine(gw.GetErrorMessage);
                 return;
             }
-            gw.StartProcess();
-
-            Console.WriteLine("ok");
-
+            var isSuccess = gw.StartProcess();
+            if (isSuccess)
+            {
+                Console.WriteLine("Final output --> " + gw.GetGeneratedWords);
+            }
         }
     }
 }
@@ -28,16 +29,27 @@ public class GenerateWords
 {
     private string _inputs = "";
     private string _errmsg = "";
+    private string _outputs = "";
+
+    const int digitMaxLen = 11;
 
     public GenerateWords(string inputs)
     {
-        _inputs = inputs;
+        _inputs = inputs.Trim();
     }
 
     public string GetErrorMessage {
         get
         {
             return _errmsg;
+        }
+    }
+
+    public string GetGeneratedWords
+    {
+        get
+        {
+            return _outputs;
         }
     }
 
@@ -58,10 +70,10 @@ public class GenerateWords
             retval = false;
             _errmsg = "Decmals not allowed !!";
         }
-        else if (_inputs.Length > 11)
+        else if (_inputs.Length > digitMaxLen)
         {
             retval = false;
-            _errmsg = "Number upto 11 digit are allowed !!";
+            _errmsg = $"Number upto {digitMaxLen} digit are allowed !!";
         }
         else if (!isNumber)
         { 
@@ -71,9 +83,15 @@ public class GenerateWords
         return retval;
     }
 
-    internal void StartProcess()
+    internal bool StartProcess()
     {
-        var formatinput = "00000000000" + _inputs;
+
+        bool retval = true;
+
+        var formatinput =  _inputs.PadLeft(digitMaxLen,'0');
+        formatinput = formatinput.Substring(formatinput.Length - digitMaxLen);  // Taking 11
         Console.WriteLine(formatinput);
+
+        return retval;
     }
 }
