@@ -118,27 +118,29 @@ public class GenerateWords
             int i = Convert.ToInt32(item.SeriesValue);
             int firstPosDigit = Convert.ToInt32(item.SeriesValue.Substring(0, 1));
             int secondPosDigit = Convert.ToInt32(item.SeriesValue.Substring(1, 1));
+            int actualArrItemPos = i - 1;
 
             if (i != 0)
             {
+
                 if (i >= 1 && i <= 9)
                 {
-                    formatoutput = formatoutput + " " + arrSingle[i];
+                    formatoutput = formatoutput + " " + arrSingle[actualArrItemPos];
                 }
                 else if (i >= 11 && i <= 19)
                 {
-                    formatoutput = formatoutput + " " + arr11to19[i];
+                    formatoutput = formatoutput + " " + arr11to19[actualArrItemPos-10];
                 }
                 else if (TenthPositions.Contains(item.SeriesValue))
                 {
-                    formatoutput = formatoutput + " " + arr20to90[i];
+                    formatoutput = formatoutput + " " + arr20to90[actualArrItemPos-19];
                 }
                 else if ((i > 20) &&
                         (secondPosDigit != 0))
                 {
                     //This condition executes for any condition where i is greater then 20 and digit on 2nd position is != 0
-                    formatoutput = formatoutput + " " + arr20to90[firstPosDigit];
-                    formatoutput = formatoutput + " " + arrSingle[secondPosDigit];
+                    formatoutput = formatoutput + " " + arr20to90[firstPosDigit-2];
+                    formatoutput = formatoutput + " " + arrSingle[secondPosDigit-1];
                 }
 
                 //Adding suffixes to digit
