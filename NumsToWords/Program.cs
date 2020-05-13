@@ -99,6 +99,9 @@ public class GenerateWords
         string[] arr11to19 = new string[9] { "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
         string[] arr20to90 = new string[8] { "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninty" };
 
+        const string TenthPositions = "10,20,30,40,50,60,70,80,90";
+
+        var formatoutput = "";
         var formatinput =  _inputs.PadLeft(digitMaxLen,'0');
         formatinput = formatinput.Substring(formatinput.Length - digitMaxLen);  // Taking 11
 
@@ -110,7 +113,32 @@ public class GenerateWords
         series.Add(new Series() { SeriesName = "Hundred", SeriesValue = formatinput.Substring(8, 1) });
         series.Add(new Series() { SeriesName = "", SeriesValue = formatinput.Substring(9, 2) });
 
+        foreach (var item in series)
+        {
+            int i = Convert.ToInt32(item.SeriesValue);
+            if (i != 0)
+            {
+                if (i >= 1 && i <= 9)
+                {
+                    formatoutput = formatoutput + " " + arrSingle[i];
+                }
+                else if (i >= 11 && i <= 19)
+                {
+                    formatoutput = formatoutput + " " + arr11to19[i];
+                }
+                else if (TenthPositions.Contains(item.SeriesValue))
+                {
+                    formatoutput = formatoutput + " " + arr20to90[i];
+                }
+
+                //Adding suffixes to digit
+                formatoutput = formatoutput + " " + item.SeriesName;
+            }
+        } 
+
         Console.WriteLine(formatinput);
+
+        _outputs = formatoutput;
 
         return retval;
     }
